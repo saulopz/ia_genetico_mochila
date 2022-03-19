@@ -278,16 +278,6 @@ class Genetic:
 
 # MAIN PROGRAM -----------------------------------------
 def main():
-    # Faço ajustes para ser mais fácil (atributos globais)
-    '''
-    Genetic.population_size = 100
-    Genetic.selection_size = 40
-    Genetic.crossover_gene_size = 2
-    Genetic.mutation_individual_size = 20
-    Genetic.mutation_gene_size = 2
-    Genetic.generations = 500
-    '''
-    
     # inicio o algoritmo
     genetic = Genetic()
     genetic.run()
