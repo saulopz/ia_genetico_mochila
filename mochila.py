@@ -1,3 +1,4 @@
+import sys
 import json
 from random import *
 
@@ -15,18 +16,36 @@ class Item:
 # Lê as configurações do arquivo config.json e carrega
 # nessa classe estática para ser usada em todo o programa
 class Data:
+    # Coloquei aqui a configuração das variáveis para ajustes do algoritmo
+    # genético no arquivo json de configuração e leio elas em Data
+    population_size = 50            # tamanho da população
+    selection_size = 20             # quantos vou selecionar
+    crossover_gene_size = 2         # quantos gens vou usar no cruzamento
+    mutation_individual_size = 10   # quantos indivíduos vou mutar cada geração
+    mutation_gene_size = 2          # quantos gens de cada indivíduo vou mutar
+    penality = 100                  # desconto de penalidade ao passar do peso
+    generations = 100               # por quantas gerações o algoritmo vai executar
+
     size = 0        # quantidade de itens
     capacity = 0    # capacidade da mochila
     items = []      # vetor contendo os itens
 
     @staticmethod
-    def load():
+    def load(filename):
         # abre o arquivo e converte para um objeto json
-        file = open("config.json")
+        file = open(filename)
         data = json.load(file)
         file.close()
+
         # coloca as informações do objeto json na classe
         # Data pra facilitar o acesso aos dados
+        Data.population_size = int(data["population_size"])
+        Data.selection_size = int(data["selection_size"])
+        Data.crossover_gene_size = int(data["crossover_gene_size"])
+        Data.mutation_individual_size = int(data["mutation_individual_size"])
+        Data.mutation_gene_size = int(data["mutation_gene_size"])
+        Data.generations = int(data["generations"])
+
         Data.capacity = int(data["capacity"])
         for i in range(len(data["items"])):
             name = data["items"][i]["name"]
@@ -63,7 +82,7 @@ class Individual:
         # caso o peso total de ítens incluso seja maior que a capacidade
         # da mochila, dá uma penalidade, diminuindo em 100 a aptidão
         if weight > Data.capacity:
-            self.fitness -= 100
+            self.fitness -= Data.penality
 
     # apresenta informações do indivíduo de forma simplificada para debug
     def show(self):
@@ -96,17 +115,8 @@ class Individual:
 
 # GENETIC CLASS --------------------------------------------------
 class Genetic:
-    # Configuro um padrão aqui, mas faço ajustes no main
-    population_size = 50            # tamanho da população
-    selection_size = 20             # quantos vou selecionar
-    crossover_gene_size = 2         # quantos gens vou usar no cruzamento
-    mutation_individual_size = 10   # quantos indivíduos vou mutar cada geração
-    mutation_gene_size = 2          # quantos gens de cada indivíduo vou mutar
-    generations = 100               # por quantas gerações o algoritmo vai executar
-
     # constructor
     def __init__(self):
-        Data.load()             # carrega as configurações
         self.population = []    # inicia com população vazia
 
     # mostra todos os indivíduos da população
@@ -117,7 +127,7 @@ class Genetic:
     # cria a população inicial com indivíduos contendo ítens aleatórios
     def create_population(self):
         print("CREIANDO POPULAÇÃO INICIAL...")
-        for i in range(Genetic.population_size):
+        for i in range(Data.population_size):
             self.population.append(Individual())
 
     # calcula a aptidão de todos os indivíduos da população
@@ -172,9 +182,18 @@ class Genetic:
                 b.accumulated_fitness = aux
             self.population.sort(key=lambda x: x.accumulated_fitness)
 
+        # Sempre seleciono os dois mais fortes, para garantir que eles
+        # se reproduzam e não morram
+        if best:
+            self.population[-1].selected = True
+            self.population[-2].selected = True
+        else:
+            self.population[0].selected = True
+            self.population[1].selected = True
+
         # e roda a roleta para selecionar a quantidade de indivúdios
-        # definida em Genetic.selection_size
-        for j in range(Genetic.selection_size):
+        # definida em Data.selection_size
+        for j in range(Data.selection_size - 2):
             # pega um número aleatório com base na aptidão total
             num = randint(0, fitness_total)
             last = 0
@@ -218,7 +237,7 @@ class Genetic:
         while i < len(selected):
             child_a = selected[i].clone()
             child_b = selected[i+1].clone()
-            for j in range(Genetic.crossover_gene_size):
+            for j in range(Data.crossover_gene_size):
                 # escolhe um gen aleatório e troca nos filhos
                 k = randint(0, Data.size - 1)
                 child_a.gene[k] = selected[i+1].gene[k]
@@ -232,13 +251,13 @@ class Genetic:
     def mutation(self):
         print("MUTAÇÃO...")
         # pega uma quantidade aleatória de indivíduos para mutar
-        # a cada geração, entre 0 e Genetic.mutation_individual_size
-        size = randint(0, Genetic.mutation_individual_size)
+        # a cada geração, entre 0 e Data.mutation_individual_size
+        size = randint(0, Data.mutation_individual_size)
         for i in range(size):
             # pega um indivíduo aleatório da população
             k = randint(0, len(self.population) - 1)
             # pega alguns gens aleatórios e inverte o valor
-            for j in range(Genetic.mutation_gene_size):
+            for j in range(Data.mutation_gene_size):
                 l = randint(0, Data.size - 1)
                 if self.population[k].gene[l] == 1:
                     self.population[k].gene[l] = 0
@@ -260,7 +279,7 @@ class Genetic:
     # Algoritmo genético propriamente dito.
     def run(self):
         self.create_population()
-        for g in range(Genetic.generations):
+        for g in range(Data.generations):
             print("GERAÇÃO", g)
             self.evaluate()
             self.selection(True)
@@ -278,6 +297,9 @@ class Genetic:
 
 # MAIN PROGRAM -----------------------------------------
 def main():
+    # carrega as configurações do arquivo passado
+    # como parâmetro
+    Data.load(sys.argv[1])
     # inicio o algoritmo
     genetic = Genetic()
     genetic.run()

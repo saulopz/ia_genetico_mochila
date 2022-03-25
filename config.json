@@ -1,4 +1,12 @@
 {
+  "population_size": "50",
+  "selection_size": "20",
+  "crossover_gene_size": "2",
+  "mutation_individual_size": "10",
+  "mutation_gene_size": "2",
+  "generations": "100",
+  "penality": "100",
+
   "capacity": "22",
   "items": [
     { "name": "notebook", "value": "5", "weight": "7" },
@@ -7,6 +15,12 @@
     { "name": "anel", "value": "2", "weight": "10" },
     { "name": "colar", "value": "7", "weight": "4" },
     { "name": "videogame", "value": "9", "weight": "6" },
-    { "name": "smarthone", "value": "4", "weight": "4" }
+    { "name": "smarthone", "value": "4", "weight": "1" },
+    { "name": "a", "value": "2", "weight": "5" },
+    { "name": "b", "value": "3", "weight": "10" },
+    { "name": "c", "value": "4", "weight": "2" },
+    { "name": "d", "value": "7", "weight": "4" },
+    { "name": "e", "value": "1", "weight": "3" },
+    { "name": "f", "value": "10", "weight": "12" }
   ]
 }
