@@ -182,15 +182,6 @@ class Genetic:
                 b.accumulated_fitness = aux
             self.population.sort(key=lambda x: x.accumulated_fitness)
 
-        # Sempre seleciono os dois mais fortes, para garantir que eles
-        # se reproduzam e não morram
-        if best:
-            self.population[-1].selected = True
-            self.population[-2].selected = True
-        else:
-            self.population[0].selected = True
-            self.population[1].selected = True
-
         # e roda a roleta para selecionar a quantidade de indivúdios
         # definida em Data.selection_size
         for j in range(Data.selection_size - 2):

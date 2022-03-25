@@ -26,7 +26,7 @@ o arquivo out.txt irá conter o resultado da execução, com a melhor solução 
 
 ## Problema no Algoritmo
 
-Quando começa a adicionar muitos ítens possiveis de serem colocados na mochila com baixa capacidade o algoritmo pode se perder às vezes.
+Quando começa a adicionar muitos itens possíveis de serem colocados na mochila com baixa capacidade o algoritmo pode se perder às vezes.
 
 O problema realmente é na lógica da função de seleção implementado (roleta). O que acontece é que em alguns casos, quando colocamos muitos produtos para serem avaliados, pela aleatoriedade, o algoritmo pode deixar todos os indivíduos, ou a maioria, com pesos maiores do permitido, então todo mundo é penalizado e o algoritmo começa a achar que quanto maior o valor total, melhor.
 
