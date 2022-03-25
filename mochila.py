@@ -297,8 +297,7 @@ class Genetic:
 
 # MAIN PROGRAM -----------------------------------------
 def main():
-    # carrega as configurações do arquivo passado
-    # como parâmetro
+    # carrega as configurações do arquivo passado como parâmetro
     Data.load(sys.argv[1])
     # inicio o algoritmo
     genetic = Genetic()

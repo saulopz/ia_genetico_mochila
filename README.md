@@ -35,4 +35,3 @@ Se rodar o algoritmo outra vez, pode ser que dê certo, é a coisa da aleatoried
 Nesse caso, pode ser mais interessante o algoritmo de roleta que implementei no [programa genético em Java](https://saulo.arisa.com.br/wiki/index.php/Gen%C3%A9ticos:_Exemplo_em_Java). Nele eu considero o valor ideal o melhor. O que tem a mais ou a menos perde pontos. Bem, existem outros métodos também que dá pra testar.
 
 Caso encontrem outro bug ou quiserem sugerir outro algoritmo de seleção, mandem um [e-mail](mailto:saulopz@gmail.com) pra mim.
-
